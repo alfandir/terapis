@@ -71,6 +71,42 @@ $(() => {
         })
     })
 
+    $('#form-terapi-tanggapan').on('submit', function (e) {
+        e.preventDefault();
+
+        var data = new FormData(this);
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            data: data,
+            dataType: 'json',
+            processData: false,
+            contentType: false,
+            beforeSend: () => {
+                clearErrorMessage();
+                $('#modal-terapi-tanggapan').find('.modal-dialog').LoadingOverlay('show');
+            },
+            success: (res) => {
+                $('#modal-terapi-tanggapan').find('.modal-dialog').LoadingOverlay('hide', true);
+                $(this)[0].reset();
+                clearErrorMessage();
+                table.ajax.reload();
+                $('#modal-terapi-tanggapan').modal('hide');
+            },
+            error: ({ status, responseJSON }) => {
+                $('#modal-terapi-tanggapan').find('.modal-dialog').LoadingOverlay('hide', true);
+
+                if (status == 422) {
+                    generateErrorMessage(responseJSON, true);
+                    return false;
+                }
+
+                showErrorToastr('oops', responseJSON.msg)
+            }
+        })
+    })
+
     $('#table-data').on('click', '.btn-update', function () {
         var tr = $(this).closest('tr');
         var data = table.row(tr).data();
@@ -84,6 +120,21 @@ $(() => {
 
         $('#modal-terapi-update').modal('show');
     })
+
+    $('#table-data').on('click', '.btn-tanggapan', function () {
+        var tr = $(this).closest('tr');
+        var data = table.row(tr).data();
+
+        clearErrorMessage();
+        $('#form-terapi-tanggapan')[0].reset();
+
+        $('.keluhan').text('Keluhan: ' + data.keluhan);
+        $('#tanggapan-id').val(data.id);
+        $('#tanggapan').val(data.tanggapan);
+
+        $('#modal-terapi-tanggapan').modal('show');
+    })
+
 
     $('#form-terapi').on('submit', function (e) {
         e.preventDefault();
@@ -167,20 +218,29 @@ $(() => {
                 return data;
             }
         }, {
-            data: 'catatan',
+            data: 'tanggapan',
             render: (data,type,row) => {
                 return data?? '';
             }
         }, {
             data: 'status',
             render: (data,type,row) => {
-                return data == 0 ? 'Menunggu' : 'Selesai';
+                if (data == 0) {
+                    return '<div class="badge badge-warning badge-lg">Menunggu</div>';
+                } else {
+                    return '<div class="badge badge-primary badge-lg">Selesai</div>';
+                }
             }
         }, 
         {
             data: 'id',
             render: (data, type, row) => {
-                const button_edit = $('<button>', {
+                var roleId = $('#role_id').val();
+                let button_edit ='';
+                let button_delete = '';
+            if(roleId == 2) {
+
+                button_edit   = $('<button>', {
                     class: 'btn btn-primary btn-update',
                     html: '<i class="bx bx-pencil"></i>',
                     'data-id': data,
@@ -189,7 +249,7 @@ $(() => {
                     'data-toggle': 'tooltip'
                 });
 
-                const button_delete = $('<button>', {
+                button_delete  = $('<button>', {
                     class: 'btn btn-danger btn-delete',
                     html: '<i class="bx bx-trash"></i>',
                     'data-id': data,
@@ -197,13 +257,24 @@ $(() => {
                     'data-placement': 'top',
                     'data-toggle': 'tooltip'
                 });
+            } else {
+                button_edit   = $('<button>', {
+                    class: 'btn btn-success btn-tanggapan',
+                    text: 'Tanggapi',
+                    'data-id': data,
+                    title: 'Tanggapi',
+                    'data-placement': 'top',
+                    'data-toggle': 'tooltip'
+                });
 
+            }
+                
                 return $('<div>', {
                     class: 'btn-group',
                     html: () => {
                         let arr = [];
 
-                        if (permissions.update && row.status == 0) arr.push(button_edit)
+                        if (permissions.update && row.status == 1) arr.push(button_edit)
                         if (permissions.delete && row.status == 0) arr.push(button_delete)
 
                         return arr;

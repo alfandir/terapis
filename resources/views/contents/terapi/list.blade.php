@@ -9,6 +9,8 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    <input type="hidden" name="role_id" id="role_id" class="form-control" value=<?= session('role_id') ?>>
+
                     @if (rbacCheck('terapi', 2))
                         <div class="row mb-2">
                             <div class="col-sm-12">
@@ -27,7 +29,7 @@
                                     <th style="width: 5%;">#</th>
                                     <th>Nama Lengkap</th>
                                     <th>Keluhan</th>
-                                    <th>Catatan</th>
+                                    <th>Tanggapan</th>
                                     <th>Status</th>
                                     <th>Aksi</th>
                                     <th></th>
@@ -53,19 +55,9 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
+
                     <div class="modal-body">
-                        {{-- <div class="form-group">
-                            <label for="username">Nama terapi</label>
-                            <input type="text" name="username" id="username" class="form-control"
-                                placeholder="Masukkan Nama terapi" required>
-                            <div id="error-username"></div>
-                        </div> --}}
-                        {{-- <div class="form-group">
-                            <label for="name">Nama Lengkap</label>
-                            <input type="text" name="name" id="name" class="form-control"
-                                placeholder="Masukkan Nama Lengkap" required>
-                            <div id="error-name"></div>
-                        </div> --}}
+
                         <div class="form-group">
                             <label for="keluhan">Keluhan</label>
                             <input type="keluhan" name="keluhan" id="keluhan" class="form-control"
@@ -84,9 +76,43 @@
     </div><!-- /.modal -->
 
     <!-- sample modal content -->
+    <div id="modal-terapi-tanggapan" class="modal fade" tabindex="-1" role="dialog"
+        aria-labelledby="modal-terapi-tanggapanLabel" aria-hidden="true">
+        <form action="{{ route('terapi.tanggapan') }}" method="post" id="form-terapi-tanggapan" autocomplete="off">
+            @method('PATCH')
+            <input type="hidden" name="id" id="tanggapan-id">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0" id="modal-terapi-tanggapanLabel">Form terapi</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="bg-primary text-white p-2 rounded mt-2 mx-3 keluhan">
+                        Keluhan: <?= @$tanggapan ?>.
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="tanggapan">Tanggapan</label>
+                            <input type="text" name="tanggapan" id="tanggapan" class="form-control"
+                                placeholder="Masukkan tanggapan" required>
+                            <div id="error-tanggapan"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary waves-effect waves-light">Simpan</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </form>
+    </div><!-- /.modal -->
+
+    <!-- sample modal tanggapan -->
     <div id="modal-terapi-update" class="modal fade" tabindex="-1" role="dialog"
         aria-labelledby="modal-terapi-updateLabel" aria-hidden="true">
-        <form action="{{ route('terapi.update') }}" method="post" id="form-terapi-update" autocomplete="off">
+        <form action="{{ route('terapi.tanggapan') }}" method="post" id="form-terapi-update" autocomplete="off">
             @method('PATCH')
             <input type="hidden" name="id" id="update-id">
             <div class="modal-dialog">
@@ -99,10 +125,10 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="update-keluhan">Keluhan</label>
-                            <input type="text" name="keluhan" id="update-keluhan" class="form-control"
-                                placeholder="Masukkan Keluhan" required>
-                            <div id="error-update-keluhan"></div>
+                            <label for="update-tanggapan">Tanggapan</label>
+                            <input type="text" name="tanggapan" id="update-tanggapan" class="form-control"
+                                placeholder="Masukkan tanggapan" required>
+                            <div id="error-update-tanggapan"></div>
                         </div>
                     </div>
                     <div class="modal-footer">

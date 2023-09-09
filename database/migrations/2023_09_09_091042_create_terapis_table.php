@@ -15,9 +15,10 @@ class CreateTerapiTable extends Migration
     {
         Schema::create('terapis', function (Blueprint $table) {
             $table->id();
+            $table->int('user_id', 11)->nullable(false);
             $table->string('name', 255)->nullable(false);
-            $table->string('keluhan', 255)->nullable(false);
-            $table->string('catatan', 255)->nullable(false);
+            $table->longText('keluhan')->nullable(false);
+            $table->longText('tanggapan');
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
             $table->softDeletes();

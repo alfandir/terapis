@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Model\Terapi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class TerapiController extends Controller
@@ -30,13 +31,39 @@ class TerapiController extends Controller
             'keluhan' => 'required'
         ]);
 
+
         try {
             Terapi::create([
                 'name' => session('name'),
+                'user_id' => Auth::id(),
                 'keluhan' => $request->keluhan,
             ]);
 
             return response()->json(['status' => true], 200);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'msg' => $e->getMessage()], 400);
+        }
+    }
+
+    function tanggapan(Request $request)
+    {
+        $request->validate([
+            'tanggapan' => 'required',
+        ]);
+
+        try {
+            $terapi = Terapi::find($request->id);
+
+            $terapi->tanggapan = $request->tanggapan;
+            $terapi->status = 1;
+
+            if ($terapi->isDirty()) {
+                $terapi->save();
+            }
+
+            if ($terapi->wasChanged()) {
+                return response()->json(['status' => true], 200);
+            }
         } catch (\Exception $e) {
             return response()->json(['status' => false, 'msg' => $e->getMessage()], 400);
         }

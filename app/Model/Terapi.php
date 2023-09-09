@@ -13,6 +13,7 @@ class Terapi extends Model
 
     protected $fillable = [
         'name',
+        'user_id',
         'keluhan',
         'catatan',
         'status',

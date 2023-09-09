@@ -10,17 +10,18 @@
             <div class="card">
                 <div class="card-body">
                     <input type="hidden" name="role_id" id="role_id" class="form-control" value=<?= session('role_id') ?>>
-
-                    @if (rbacCheck('terapi', 2))
-                        <div class="row mb-2">
-                            <div class="col-sm-12">
-                                <div class="text-sm-right">
-                                    <button type="button"
-                                        class="btn btn-success btn-rounded waves-effect waves-light btn-tambah"><i
-                                            class="bx bx-plus-circle mr-1"></i> Tambah</button>
+                    @if (in_array(session('role_id'), [1, 2]))
+                        @if (rbacCheck('terapi', 2))
+                            <div class="row mb-2">
+                                <div class="col-sm-12">
+                                    <div class="text-sm-right">
+                                        <button type="button"
+                                            class="btn btn-success btn-rounded waves-effect waves-light btn-tambah"><i
+                                                class="bx bx-plus-circle mr-1"></i> Tambah</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     @endif
                     <div class="table-responsive" data-pattern="priority-columns">
                         <table class="table table-striped" id="table-data" style="width: 100%;">

@@ -42,7 +42,7 @@ class OtoritasController extends Controller
             $role = Role::create([
                 'name' => $request->name,
                 'slug_name' => Str::snake($request->name),
-                'type' => 'staff',
+                // 'type' => 'staff',
                 'is_active' => 1,
             ]);
 

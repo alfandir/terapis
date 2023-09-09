@@ -44,6 +44,8 @@ class HomeController extends Controller
             return redirect()->route('dashboard');
         }
 
+        $request->session()->put('name', $user->name);
+
         return view('auth.roles', [
             'user' => $user,
         ]);

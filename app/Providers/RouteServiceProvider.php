@@ -54,6 +54,8 @@ class RouteServiceProvider extends ServiceProvider
             $this->mapMenuRoutes();
 
             $this->mapOtoritasRoutes();
+
+            $this->mapTerapiRoutes();
         });
     }
 
@@ -112,5 +114,12 @@ class RouteServiceProvider extends ServiceProvider
         Route::prefix('otoritas')
             ->namespace($this->namespace)
             ->group(base_path('routes/panel/otoritas.php'));
+    }
+
+    protected function mapTerapiRoutes()
+    {
+        Route::prefix('terapi')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/panel/terapi.php'));
     }
 }

@@ -1,0 +1,14 @@
+php_value memory_limit 4G
+php_value upload_max_filesize 14G
+php_value post_max_size 4G
+php_value client_max_body_size 4G
+php_value max_execution_time 0
+php_value max_input_time 0
+
+# Deny all access to JSON file
+<FilesMatch "\.json$">
+    Deny from all
+</FilesMatch>
+
+# Deny all access to the .git directory
+RedirectMatch 404 /\.git

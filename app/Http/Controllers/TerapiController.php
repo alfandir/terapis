@@ -125,7 +125,8 @@ class TerapiController extends Controller
             'title' => 'LAPORAN HASIL TERAPI',
             'petugas' => $petugas->name,
             'keluhan' => $terapi->keluhan,
-            'tanggapan' => $terapi->tanggapan
+            'tanggapan' => $terapi->tanggapan,
+            'nama' => $terapi->name,
         ];
         // Buat PDF dengan menggunakan laravel-dompdf
         $pdf = PDF::loadView('contents.terapi.export', $data); // Anda dapat membuat view PDF kustom

@@ -14,9 +14,10 @@
     <ol>
         <li><strong>Terapis</strong>
             <p>&nbsp;</p>
-            <ol>
-                {{ $petugas }}
-            </ol>
+            <ul>
+                <li>Nama Petugas: {{ $petugas }}</li>
+                <li>Nama Peserta: {{ $nama }}</li>
+            </ul>
         </li>
     </ol>
     <p>&nbsp;</p>

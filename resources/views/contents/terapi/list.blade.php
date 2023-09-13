@@ -61,8 +61,7 @@
 
                         <div class="form-group">
                             <label for="keluhan">Keluhan</label>
-                            <input type="keluhan" name="keluhan" id="keluhan" class="form-control"
-                                placeholder="Masukkan Keluhan" required>
+                            <textarea name="keluhan" id="keluhan" class="form-control" placeholder="Masukkan Keluhan" required></textarea>
                             <div id="error-keluhan"></div>
                         </div>
 
@@ -96,8 +95,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="tanggapan">Tanggapan</label>
-                            <input type="text" name="tanggapan" id="tanggapan" class="form-control"
-                                placeholder="Masukkan tanggapan" required>
+                            <textarea name="tanggapan" id="tanggapan" class="form-control" placeholder="Masukkan Tanggapan" required></textarea>
                             <div id="error-tanggapan"></div>
                         </div>
                     </div>

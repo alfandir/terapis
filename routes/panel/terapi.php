@@ -8,3 +8,4 @@ Route::post('/store', [TerapiController::class, 'store'])->name('terapi.store')-
 Route::patch('/tanggapan', [TerapiController::class, 'tanggapan'])->name('terapi.tanggapan')->middleware('rbac:terapi,3');
 Route::patch('/update', [TerapiController::class, 'update'])->name('terapi.update')->middleware('rbac:terapi,3');
 Route::delete('/delete', [TerapiController::class, 'delete'])->name('terapi.delete')->middleware('rbac:terapi,4');
+Route::get('/export', [TerapiController::class, 'export'])->name('terapi.export')->middleware('rbac:terapi');

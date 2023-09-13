@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Model\Terapi;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Yajra\DataTables\Facades\DataTables;
+use PDF;
 
 class TerapiController extends Controller
 {
@@ -55,6 +58,8 @@ class TerapiController extends Controller
             $terapi = Terapi::find($request->id);
 
             $terapi->tanggapan = $request->tanggapan;
+            $terapi->petugas_id = Auth::id();
+
             $terapi->status = 1;
 
             if ($terapi->isDirty()) {
@@ -105,5 +110,31 @@ class TerapiController extends Controller
         } catch (\Exception $e) {
             return response()->json(['status' => false, 'msg' => $e->getMessage()], 400);
         }
+    }
+
+    function export(Request $request)
+    {
+        $id = $request->input('id');
+        // $id = Crypt::decrypt($encryptedId);
+
+        $terapi = Terapi::find($id);
+
+        $petugas = User::find($terapi->id);
+
+        $data = [
+            'title' => 'LAPORAN HASIL TERAPI',
+            'petugas' => $petugas->name,
+            'keluhan' => $terapi->keluhan,
+            'tanggapan' => $terapi->tanggapan
+        ];
+        // Buat PDF dengan menggunakan laravel-dompdf
+        $pdf = PDF::loadView('contents.terapi.export', $data); // Anda dapat membuat view PDF kustom
+
+        // Simpan atau tampilkan PDF
+        // Untuk menyimpan sebagai file PDF
+        // $pdf->save(storage_path('exported.pdf'));
+
+        // Untuk menampilkan PDF dalam browser
+        return $pdf->stream();
     }
 }

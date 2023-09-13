@@ -34,6 +34,16 @@ $(() => {
         })
     })
 
+    
+    $('#table-data').on('click', '.btn-export', function () {
+        let data = table.row($(this).closest('tr')).data();
+    
+        let { id } = data;
+
+        window.location.href = BASE_URL + 'terapi/export?id=' + id;
+    
+    });
+
 
     $('#form-terapi-update').on('submit', function (e) {
         e.preventDefault();
@@ -235,9 +245,11 @@ $(() => {
         {
             data: 'id',
             render: (data, type, row) => {
+                console.log(permissions);
                 var roleId = $('#role_id').val();
                 let button_edit ='';
                 let button_delete = '';
+                let button_export = '';
             if(roleId == 2) {
 
                 button_edit   = $('<button>', {
@@ -264,7 +276,16 @@ $(() => {
                     'data-id': data,
                     title: 'Tanggapi',
                     'data-placement': 'top',
-                    'data-toggle': 'tooltip'
+                    'data-toggle': 'tooltip',
+                });
+
+                button_export   = $('<button>', {
+                    class: 'btn btn-primary btn-export',
+                    text: 'Export',
+                    'data-id': data,
+                    title: 'Export',
+                    'data-placement': 'top',
+                    'data-toggle': 'tooltip',
                 });
 
             }
@@ -274,8 +295,9 @@ $(() => {
                     html: () => {
                         let arr = [];
 
-                        if (permissions.update && row.status == 1) arr.push(button_edit)
+                        if ((permissions.update && row.status == 0) && roleId == 1 || roleId ==3) arr.push(button_edit)
                         if (permissions.delete && row.status == 0) arr.push(button_delete)
+                        if (permissions.download && row.status == 1) arr.push(button_export)
 
                         return arr;
                     }
